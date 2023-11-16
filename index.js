@@ -80,6 +80,18 @@ app.get("/micoleccion", (req, res) => {
   });
 });
 
+//Buscar productos
+app.get('/micoleccion', (req, res) => {
+  const titulo = req.query.titulo;
+  const sql = 'SELECT * FROM MiColeccion WHERE titulo LIKE ?';
+  
+  // Usa '%' para buscar cualquier producto que contenga el texto de búsqueda en su nombre
+  connection.query(sql, ['%' + titulo + '%'], (error, results) => {
+    if (error) throw error;
+    res.send(results);
+  });
+});
+
 
 //Borrar producto
 app.delete("/micoleccion/:id", (req, res) => {
