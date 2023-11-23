@@ -44,8 +44,7 @@ app.post("/login", (req, res) => {
   }
 });
 
-//Producto
-
+//Agregar Producto
 app.post("/micoleccion", (req, res) => {
   const { titulo, descripcion, url_imagen, precio, url_compra } = req.body;
   var post = {
@@ -68,6 +67,31 @@ app.post("/micoleccion", (req, res) => {
     }
   );
 });
+
+// Actualizar Producto
+app.put("/micoleccion/:id", (req, res) => {
+  const { titulo, descripcion, url_imagen, precio, url_compra } = req.body;
+  var post = {
+    titulo: titulo,
+    descripcion: descripcion,
+    url_imagen: url_imagen,
+    precio: precio,
+    url_compra: url_compra,
+  };
+  var query = connection.query(
+    "UPDATE MiColeccion SET ? WHERE id = ?",
+    [post, req.params.id],
+    function (error, results, fields) {
+      if (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error al actualizar el producto" });
+      } else {
+        res.json({ message: "Producto actualizado exitosamente" });
+      }
+    }
+  );
+});
+
 
 app.get("/micoleccion", (req, res) => {
   connection.query("SELECT * FROM MiColeccion", (error, results) => {
